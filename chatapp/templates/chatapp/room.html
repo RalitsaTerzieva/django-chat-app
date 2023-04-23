@@ -2,13 +2,20 @@
 
 {{ chatroom.name }}
 
+
 <form method='POST'>
-    <input type='text' name='message' placeholder='Enter message'>
-    <button type='submit'>Send</button>
+    {% csrf_token %}
+    <input id='message-input' type='text' name='message' placeholder='Enter message'>
+    <button id='send-button'>Send</button>
 </form>
+
 {{ chatroom.slug|json_script:"json-chatroomname" }}
+{{ request.user.username|json_script:"json-username" }}
+
 <script>
     const chatRoomName = JSON.parse(document.getElementById("json-chatroomname").textContent)
+    const userName = JSON.parse(document.getElementById("json-username").textContent)
+
     const chatSocket = new WebSocket(
         'ws://' 
         + window.location.host
@@ -22,5 +29,19 @@
     }
     chatSocket.onclose = function(e){
         consle.log('Socket closed')
+    }
+    document.getElementById('send-button').onclick = function(e){
+        e.preventDefault();
+        const messageInput = document.getElementById('message-input')
+        const message = messageInput.value
+       
+    
+        chatSocket.send(JSON.stringify({
+            'message':message,
+            'username':username,
+            'room':chatRoomName
+        }))
+
+        messageInput.value = ""
     }
 </script>
