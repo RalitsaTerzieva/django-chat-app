@@ -25,10 +25,15 @@
     )
 
     chatSocket.onmessage = function(e){
-        console.log('This is a message')
+        const data = JSON.parse(e.data)
+        if(data.message){
+            console.log('Received message to client is', data.message)
+        }else {
+            alert('The message was empty')
+        }
     }
     chatSocket.onclose = function(e){
-        consle.log('Socket closed')
+        console.log('Socket closed')
     }
     document.getElementById('send-button').onclick = function(e){
         e.preventDefault();
@@ -37,9 +42,9 @@
        
     
         chatSocket.send(JSON.stringify({
-            'message':message,
-            'username':username,
-            'room':chatRoomName
+            'message': message,
+            'username': userName,
+            'room': chatRoomName
         }))
 
         messageInput.value = ""
