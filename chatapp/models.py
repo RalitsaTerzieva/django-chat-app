@@ -22,7 +22,7 @@ class ChatMessage(models.Model):
     date = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.user
+        return self.message_content
     
     class Meta:
         ordering = ('date',)
