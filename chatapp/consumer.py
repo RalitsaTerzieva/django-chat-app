@@ -57,4 +57,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = User.objects.get(username=username)
         room = ChatRoom.objects.get(slug=room)
         
-        ChatMessage(user=user,room=room,message_content=message)
+        chat_message = ChatMessage(user=user,room=room,message_content=message)
+        chat_message.save()
+        

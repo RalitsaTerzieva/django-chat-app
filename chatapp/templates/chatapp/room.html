@@ -1,20 +1,30 @@
 {% extends 'chatapp/base.html' %}
 
 {% block content %}
-<h1>This is a chat room!</h1>
+<h1 class='p-3 m-3 font-semibold'>Chat room!</h1>
 
-{{ chatroom.name }}
+<div class='m-5 p-5 font-bold'>{{ chatroom.name }}</div>
 
-<div id='chat-messages'>
-    {% for message in messages %}
-        {{ message.user.username }}: {{ message.message_content }} <br/>
-    {% endfor %}
+<div class='message-container m-10 overflow-auto h-[700px]' id='message-container'>
+    <div id='chat-messages'>
+        {% for message in messages %}
+        <div class='message shadow-lg p-3 m-3 rounded-lg w-1/2 h-3/4 bg-blue-200'>
+            <div class='text-gray-700 text-sm'>{{ message.user.username }}</div>
+            {{ message.message_content }}
+            <div class='text-gray-700 text-sm'>{{ message.date }}</div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-<form method='POST'>
-    {% csrf_token %}
-    <input id='message-input' type='text' name='message' placeholder='Enter message'>
-    <button id='send-button'>Send</button>
-</form>
+
+<div class='form-container fixed inset-x-0 bottom-0 bg-blue-400 p-4'>
+    <form method='POST'>
+        {% csrf_token %}
+        <input class='rounded-md px-2' id='message-input' type='text' name='message' placeholder='Enter message'>
+        <button class='text-white ml-5 bg-blue-600 rounded px-2 py-1' id='send-button'>Send</button>
+    </form>
+</div>
+
 
 {{ chatroom.slug|json_script:"json-chatroomname" }}
 {{ request.user.username|json_script:"json-username" }}
@@ -35,8 +45,11 @@
         const data = JSON.parse(e.data)
         if(data.message){
             console.log('Received message to client is', data.message)
-            let html = data.username + ' : '+ data.message + '<br/>'
+            let html = "<div class='message shadow-lg p-3 m-3 rounded-lg w-1/2 bg-blue-200'>" +
+                "<div class='text-gray-700 text-sm'>" + data.username +
+                "</div>" + data.message + "<div class='text-gray-700 text-sm'>" + "Now" + "</div>"
             document.getElementById('chat-messages').innerHTML += html
+            scroll()
         }else {
             alert('The message was empty')
         }
@@ -58,6 +71,13 @@
 
         messageInput.value = ""
     }
+
+    function scroll(){
+        const mcontainer = document.getElementById('message-container')
+        mcontainer.scrollTop = mcontainer.scrollHeight
+    }
+
+    scroll()
 </script>
 
 {% endblock %}
