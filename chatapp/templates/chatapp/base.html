@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        
+        <nav class='shadow-lg'>
+            <div class='px-4 mx-auto'>
+                <div class='flex justify-between'>
+                   
+                    <a class='flex flex-row' href=''>
+                        <img class='self-center h-5 w-5 m-4' src='https://cdn0.iconfinder.com/data/icons/business-startup-10/50/32-1024.png'>
+                        <span class='self-center text-xl font-semibold text-blue-800'>Chats App</span>
+                    </a>
+                        
+                   
+                    <div class='space-x-1'>
+                        <ul class='flex border p-4 rounded mt-2 mb-2 flex-row border-gray-100 bg-blue-50'>
+                            <li class='p-3'>
+                                <a class='text-semibold block px-2 pl-3 pr-4 rounded bg-blue-300' href='{% url "chatroom" chatroom.slug %}'>Rooms</a>
+                            </li>
+                            <li class='p-3'>
+                                <a class='text-semibold block px-2 pl-3 pr-4 rounded bg-blue-300' href=''>About</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+        
+        <script src="" async defer></script>
+    </body>
+</html>
